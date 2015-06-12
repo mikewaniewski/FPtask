@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Generate Charts";
+
+}
+
+<h2>Generate Charts</h2>
+
+
+
+
+<script>
+
+
+    $(function () {
+
+        generateChart("FP");
+        $(".chartSelection").click(function(){
+            var Code = $(this).text();
+
+            generateChart(Code);
+
+        });
+
+        function generateChart(Code) {
+
+
+            if (Modernizr.canvas) {
+
+
+                $.ajax({
+                    url: "/Home/GetChartData",
+                    type: "POST",
+                    data: JSON.stringify({ 'ShareTemplateCode': Code }),
+                    dataType: "json",
+                    traditional: true,
+                    contentType: "application/json; charset=utf-8"
+
+
+                }).done(function (data) {
+
+
+                    var chartData = {
+                        labels: data["labels"],
+                        datasets: [
+                            {
+
+                                fillColor: "rgba(220,220,220,0.2)",
+                                strokeColor: "rgba(220,220,220,1)",
+                                pointColor: "rgba(220,220,220,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(220,220,220,1)",
+                                data: data["values"]
+                            }
+                        ]
+                    };
+
+
+
+                    var ctx = $("#myChart").get(0).getContext("2d");
+
+                    new Chart(ctx).Line(chartData, {
+                        bezierCurve: false
+                    });
+
+                    $("#chartDescription").html("Showing Chart for: " + Code).effect("highlight", { color: '#6e3e7c' }, 500);
+
+
+                });
+
+
+            } else {
+                $("#chartDescription").html("Your browser does not support HTML5:Canvas component - therefore Charts can't be generated.").effect("highlight", { color: '#6e3e7c' }, 500);
+            }
+
+        }
+
+    });
+</script>
+
+
+<h1 id="chartDescription"></h1>
+
+<canvas id="myChart" width="800" height="400"></canvas>
+
+
+<h2>
+    Show Chart for Last 20 records for:
+</h2><br />
+<span class="chartSelection">FP</span> |
+<span class="chartSelection">FPL</span> |
+<span class="chartSelection">FPC</span> |
+<span class="chartSelection">PGB</span> |
+<span class="chartSelection">FPA</span> |
+<span class="chartSelection">DL24</span>
+
+
+

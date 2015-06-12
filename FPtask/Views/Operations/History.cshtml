@@ -1,0 +1,107 @@
+﻿@model IEnumerable<FPtask.Models.Operation>
+
+@{
+    ViewBag.Title = "History";
+  
+}
+
+<h2>Your Transactions History</h2>
+
+
+<p>
+    <div class="validation-summary-errors text-danger">
+
+        @ViewBag.errorInfo
+
+    </div>
+
+    <div class="text-success">
+
+        @ViewBag.successInfo
+
+    </div>
+</p>
+
+
+
+ 
+<table class="table">
+    <tr>
+        <th>
+            Operation
+        </th>
+        <th>
+            Share Code
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt) UTC
+        </th>
+        <th>
+            Amount
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Value) PLN
+        </th>
+      
+    </tr>
+
+@foreach (var item in Model) {
+
+
+    string rowBg = "";
+    string signValue = "";
+    string signAmount = "";
+    string operation = "";
+    int Amount = 0;
+
+    if (item.AmountSold > 0)
+    {
+        rowBg = "#99ff66";
+        signValue = "";
+        signAmount = "-";
+        operation = "Sale";
+        Amount = item.AmountSold;
+    }
+    else
+    {
+        rowBg = "red";
+        signValue = "-"; 
+        signAmount = "";
+        operation = "Purchase";
+        Amount = item.AmountPurchased;
+    }
+    <tr style="background-color: @rowBg">
+        <td>
+            @operation
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Code)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedAt)
+        </td>
+        <td>
+            @signAmount @Amount
+        </td>
+        
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+
+        <td>
+            @signValue @Html.DisplayFor(modelItem => item.Value)
+        </td>
+                    
+
+           
+        
+        
+    </tr>
+}
+
+</table>

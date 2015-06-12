@@ -1,0 +1,62 @@
+﻿@model IEnumerable<FPtask.Models.Shares>
+
+@{
+    ViewBag.Title = "Buy";
+    
+}
+
+<h2>Buy Shares</h2>
+
+ 
+
+
+
+
+
+<p class="lead">Last Price Update: <span id="PublicationDate"  ></span></p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AmountAvailable)
+        </th>
+
+        <th>
+            Price of 1 Share (PLN)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmountAvailable)
+            </td>
+
+
+            <td>
+                <span id="@(  item.Code )_price"></span> 
+            </td>
+
+
+            <td>
+                @Html.ActionLink("Buy Now!", "Buy", new { ShareId = @item.ShareId })
+
+            </td>
+        </tr>
+    }
+
+</table>
